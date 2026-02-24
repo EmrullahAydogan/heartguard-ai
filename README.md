@@ -118,8 +118,20 @@ From this gorgeous "Dark Glassmorphism" interface, you can effortlessly:
 - Read real-time **SOAP Notes** instantly formulated by MedGemma 1.5 during any clinical warnings.
 - Interact with the **Optimistic-UI Chatbot** to effortlessly ask MedGemma highly detailed clinical questions referencing a patient's historical stream.
 
-> [!NOTE]  
-> **Inference Latency:** Because HeartGuard AI runs the massive *MedGemma 1.5 4B* model entirely locally for HIPAA-compliant privacy, **AI-generated outputs (SOAP Notes, NYHA alerts, and Chatbot replies) may take some time to fully appear** depending on your local GPU's compute power. The interface is completely non-blocking, allowing you to seamlessly monitor critical vitals while the AI quietly reasons in the background.
+> [!IMPORTANT]  
+> **⏱️ Expected AI Inference Latency:** HeartGuard AI runs the full *MedGemma 1.5 4B* model **entirely locally** on your GPU for HIPAA-compliant privacy. Because every AI output requires a dedicated GPU inference pass, please allow sufficient time for all outputs to populate.
+>
+> **Benchmarked on NVIDIA RTX 4070 (8GB VRAM):**
+> | Output | Time per Patient | Description |
+> |--------|-----------------|-------------|
+> | NYHA Classification | ~2 min | One-time estimation at startup |
+> | Clinical Reasoning (AI Assessment) | ~2 min | Triggered by anomaly detection |
+> | Patient-Friendly Message | ~2 min | Generated after clinical reasoning |
+> | Clinician SOAP Report | ~2 min | Full clinical note with RAG guidelines |
+> | **Total per patient (full cycle)** | **~8 min** | All 4 outputs sequentially |
+> | **All 3 patients complete** | **~25 min** | Sequential GPU queue processing |
+>
+> **Vital signs, Z-scores, and risk scores appear instantly** — only the AI-generated text sections (SOAP Notes, NYHA, Chatbot) require GPU inference time. The interface is fully non-blocking; you can monitor real-time vitals while the AI reasons in the background. Higher-end GPUs (A100, H100) will produce significantly faster results.
 
 ---
 
