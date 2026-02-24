@@ -5,7 +5,7 @@ KAFKA_BROKER = os.environ.get('KAFKA_BROKER', 'localhost:29092')
 KAFKA_TOPIC_VITALS = os.environ.get('KAFKA_TOPIC_VITALS', 'chf.vitals')
 KAFKA_TOPIC_ALERTS = os.environ.get('KAFKA_TOPIC_ALERTS', 'chf.alerts')
 
-INFLUXDB_URL = os.environ.get('INFLUXDB_URL', 'http://localhost:8086')
+INFLUXDB_URL = os.environ.get('INFLUXDB_URL', 'http://localhost:8087')
 INFLUXDB_TOKEN = os.environ.get('INFLUXDB_TOKEN', 'heartguard-super-secret-token')
 INFLUXDB_ORG = os.environ.get('INFLUXDB_ORG', 'heartguard')
 INFLUXDB_BUCKET = os.environ.get('INFLUXDB_BUCKET', 'heartguard')

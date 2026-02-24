@@ -96,20 +96,16 @@ services:
     restart: on-failure
 
   heartguard-dashboard:
-    image: python:3.11-slim
+    build: ./dashboard
     container_name: heartguard-dashboard
     network_mode: host
-    working_dir: /app
-    command: >
-      bash -c "pip install dash dash-bootstrap-components plotly influxdb-client requests kafka-python --quiet &&
-               python -u app.py"
-    volumes:
-      - ./dashboard:/app
-      - ./data:/app/data
     environment:
       INFLUXDB_URL: http://localhost:8087
       INFLUXDB_TOKEN: ${INFLUXDB_ADMIN_TOKEN}
       MEDGEMMA_URL: http://localhost:8888/chat
+    volumes:
+      - ./dashboard:/app
+      - ./data:/app/data
     depends_on:
       influxdb:
         condition: service_healthy
