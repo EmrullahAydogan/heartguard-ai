@@ -29,7 +29,10 @@ CALCULATED RISK CATEGORY: {risk_category} (stable | watch | warning | critical)
 ACTIVE RISK FLAGS: {active_flags}
 TRIGGER REASON: {trigger_reason}
 
-Based on the CALCULATED RISK CATEGORY and the patient's vitals, provide:
+AGENT CONTEXT (historical data retrieved by AI tools):
+{context_history}
+
+Based on the CALCULATED RISK CATEGORY, the patient's vitals, and the AGENT CONTEXT above, provide:
 1. "clinical_reasoning": 2-3 sentences explaining why the patient is in the {risk_category} category.
 2. "recommendation": Specific clinical action recommendation appropriate for the {risk_category} level.
 3. "key_concerns": List of specific concerns in priority order.
