@@ -80,24 +80,39 @@ A (Assessment): [clinical assessment]
 P (Plan): [recommended actions]"""
 
 
-NYHA_ESTIMATION_PROMPT = """You are a cardiology specialist. Estimate the NYHA functional class (I, II, III, or IV) for the following heart failure patient.
+NYHA_ESTIMATION_PROMPT = """You are MedGemma, a cardiology AI specialist. Classify this heart failure patient's NYHA functional class using the structured reasoning framework below.
 
-NYHA CLASSIFICATION CRITERIA:
-- Class I: No limitation. Ordinary physical activity does not cause symptoms.
-- Class II: Slight limitation. Comfortable at rest, but ordinary activity causes fatigue or dyspnea.
-- Class III: Marked limitation. Comfortable at rest, but less than ordinary activity causes symptoms. Patients with elevated biomarkers (BNP >400, Troponin >1.0) or high severity scores (APACHE >50) are typically Class III or IV.
-- Class IV: Unable to carry on any physical activity without discomfort. Symptoms at rest.
+STEP 1 — ASSESS DISEASE SEVERITY (most important factor):
+Score each indicator. A SINGLE severe indicator is enough to classify Class III+.
+- APACHE Score: mild (<30), moderate (30-70), severe (70-100), critical (>100)
+- Troponin: normal (<0.04), elevated (0.04-1.0), high (1.0-5.0), critical (>5.0)
+- Creatinine: normal (<1.2), elevated (1.2-2.0), high (2.0-4.0), critical (>4.0)
+- BNP: normal (<100), elevated (100-400), high (>400)
+- Number of comorbidities: few (1-2), several (3-5), many (>5)
+
+STEP 2 — CHECK VITAL SIGNS (secondary factor, can be misleading):
+Resting vital signs may appear normal even in severely ill patients due to medications (beta-blockers, vasopressors) or being at bedrest. Do NOT let normal resting vitals override severe disease markers from Step 1.
+
+STEP 3 — APPLY CLASSIFICATION:
+- Class I: APACHE <30 AND normal biomarkers AND few comorbidities
+- Class II: APACHE 30-70 OR mildly elevated biomarkers OR several comorbidities
+- Class III: APACHE >70 OR Troponin >1.0 OR Creatinine >2.0 OR many comorbidities (>5) OR acute organ failure
+- Class IV: APACHE >100 AND multi-organ dysfunction OR active pulmonary edema OR cardiogenic shock
+
+EXAMPLES:
+- Patient with APACHE=45, Troponin=0.02, HR=78, SpO2=97 → Class II (moderate severity, normal biomarkers)
+- Patient with APACHE=112, Troponin=4.95, HR=80, SpO2=96, 10 comorbidities including acute renal failure and sepsis → Class IV (critical APACHE + critical Troponin + multi-organ dysfunction, ignore normal vitals)
+- Patient with APACHE=67, Troponin=0.15, Creatinine=1.8, HR=90, SpO2=94 → Class III (severe APACHE + elevated biomarkers)
 
 PATIENT PROFILE:
 - Age: {age}, Sex: {gender}
 - Primary Diagnosis: {primary_dx}
 - Comorbidities: {comorbidities}
-- APACHE Severity Score: {apache_score} (normal: 0-10, moderate: 11-50, severe: 51-100, critical: >100)
-- Resting HR: {hr_mean} bpm (normal: 60-100)
-- Resting SpO2: {spo2_mean}% (normal: 95-100%, concerning: <93%)
-- Resting RR: {rr_mean} breaths/min (normal: 12-20)
+- APACHE Severity Score: {apache_score}
+- Resting HR: {hr_mean} bpm
+- Resting SpO2: {spo2_mean}%
+- Resting RR: {rr_mean} breaths/min
 - Lab Values: {lab_values}
 
-IMPORTANT: Pay close attention to the APACHE score and lab biomarkers (Troponin, BNP). A very high APACHE score (>100) or elevated Troponin (>1.0) strongly suggests Class III or IV regardless of resting vitals.
+Now follow Steps 1-3 above and respond with ONLY: {{"nyha_class": <1-4>, "reasoning": "<your step-by-step reasoning>"}}"""
 
-Respond with only: {{"nyha_class": <1-4>, "reasoning": "<brief explanation>"}}"""
