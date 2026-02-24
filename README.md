@@ -20,6 +20,7 @@ The system establishes a continuous pipeline from a patient's in-home wearable d
 - **Real-time Telemetry:** Simulates medical wearable IoT streams (HR, SpO2, RR) effortlessly via Apache Kafka.
 - **Deterministic Risk Bounding:** Computes instantaneous Z-score health thresholds natively via InfluxDB to absolutely eliminate raw AI hallucinations.
 - **MedGemma 1.5 Engine:** Uses a localized PyTorch `bfloat16` Hugging Face Python Server to infer hyper-accurate medical reasoning, ensuring 100% HIPAA data privacy (Zero External APIs).
+  > **Why MedGemma 1.5 4B instead of 27B?** We deliberately selected the efficient 4B-parameter model because it unlocks true **Edge AI Integration**. The 4B-IT variant requires a fraction of the architectural VRAM, allowing HeartGuard AI to be natively embedded directly onto edge devices (smart home health hubs, local clinic towers, and ambulance computers) without ever requiring constant connection to a massive cloud GPU farm.
 - **Clinician Command Center:** Features a stunning "Premium Glassmorphism" UI built entirely from scratch utilizing Python Dash & Plotly.
 
 ---
