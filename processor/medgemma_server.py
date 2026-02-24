@@ -33,7 +33,7 @@ def load_model():
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, token=hf_token)
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_NAME,
-        dtype=torch.bfloat16,
+        torch_dtype=torch.bfloat16,
         device_map="auto",
         token=hf_token
     )
