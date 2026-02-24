@@ -54,7 +54,7 @@ def _call_local_server(prompt: str) -> str:
         resp = requests.post(
             f'{MEDGEMMA_LOCAL_URL}/generate',
             json={'prompt': prompt, 'max_tokens': 512, 'temperature': 0.3},
-            timeout=120,
+            timeout=600,
         )
         resp.raise_for_status()
         return resp.json().get('generated_text', '')
@@ -473,12 +473,20 @@ def _rule_based_nyha(profile: dict) -> dict:
     reasons = []
 
     if apache is not None:
-        if apache > 60:
+        if apache > 100:
+            score += 4
+            reasons.append(f"Critical APACHE score ({apache})")
+        elif apache > 60:
             score += 2
             reasons.append(f"High APACHE score ({apache})")
         elif apache > 40:
             score += 1
             reasons.append(f"Moderate APACHE score ({apache})")
+
+    troponin = profile.get('latest_labs', {}).get('troponin', 0.0)
+    if troponin > 1.0:
+        score += 3
+        reasons.append(f"Elevated Troponin ({troponin})")
 
     if spo2_mean is not None and spo2_mean < 92:
         score += 2
