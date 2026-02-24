@@ -100,54 +100,63 @@ def control_listener(broker, topic, shared_state):
 
 
 def stream_patient(producer, topic, patient_info, shared_state, stop_event):
-    """Stream a single patient's vitals to Kafka."""
+    """Stream a single patient's vitals to Kafka continuously."""
     pid = patient_info['patient_id']
     label = patient_info['label']
     df = patient_info['data']
 
-    print(f"[Patient {pid}] Starting stream ({label}), {len(df)} records, "
+    print(f"[Patient {pid}] Starting stream ({label}), {len(df)} records (infinite loop), "
           f"initial_interval={shared_state['speed_seconds']}s")
 
     # Use current time as base timestamp
     base_time = datetime.now(timezone.utc)
+    loop_cnt = 0
 
-    for idx, row in df.iterrows():
-        if stop_event.is_set() or shared_state.get("restart_signal"):
-            break
-            
-        while shared_state.get("state") == "paused":
+    while not stop_event.is_set() and not shared_state.get("restart_signal"):
+        for idx, row in df.iterrows():
             if stop_event.is_set() or shared_state.get("restart_signal"):
                 break
-            time.sleep(0.5)
+                
+            while shared_state.get("state") == "paused":
+                if stop_event.is_set() or shared_state.get("restart_signal"):
+                    break
+                time.sleep(0.5)
+                
+            if stop_event.is_set() or shared_state.get("restart_signal"):
+                break
+
+            # Build vital message
+            timestamp = base_time + timedelta(minutes=row.get('offset_minutes', idx * 5))
+
+            message = {
+                'patient_id': pid,
+                'timestamp': timestamp.isoformat(),
+                'heart_rate': round(float(row['heart_rate']), 1) if pd.notna(row.get('heart_rate')) else None,
+                'spo2': round(float(row['spo2']), 1) if pd.notna(row.get('spo2')) else None,
+                'respiration': round(float(row['respiration']), 1) if pd.notna(row.get('respiration')) else None,
+                'temperature': round(float(row['temperature']), 1) if pd.notna(row.get('temperature')) else None,
+                'systolic_bp': round(float(row['systolic_bp']), 1) if pd.notna(row.get('systolic_bp')) else None,
+                'diastolic_bp': round(float(row['diastolic_bp']), 1) if pd.notna(row.get('diastolic_bp')) else None,
+                'mean_bp': round(float(row['mean_bp']), 1) if pd.notna(row.get('mean_bp')) else None,
+            }
+
+            # Send to Kafka
+            producer.send(topic, key=pid, value=message)
+
+            if idx % 50 == 0:
+                print(f"[Patient {pid}] Sent record {idx}/{len(df)} (Loop {loop_cnt}), "
+                      f"HR={message['heart_rate']}, SpO2={message['spo2']}")
+
+            time.sleep(shared_state["speed_seconds"])
             
         if stop_event.is_set() or shared_state.get("restart_signal"):
             break
-
-        # Build vital message
-        timestamp = base_time + timedelta(minutes=row.get('offset_minutes', idx * 5))
-
-        message = {
-            'patient_id': pid,
-            'timestamp': timestamp.isoformat(),
-            'heart_rate': round(float(row['heart_rate']), 1) if pd.notna(row.get('heart_rate')) else None,
-            'spo2': round(float(row['spo2']), 1) if pd.notna(row.get('spo2')) else None,
-            'respiration': round(float(row['respiration']), 1) if pd.notna(row.get('respiration')) else None,
-            'temperature': round(float(row['temperature']), 1) if pd.notna(row.get('temperature')) else None,
-            'systolic_bp': round(float(row['systolic_bp']), 1) if pd.notna(row.get('systolic_bp')) else None,
-            'diastolic_bp': round(float(row['diastolic_bp']), 1) if pd.notna(row.get('diastolic_bp')) else None,
-            'mean_bp': round(float(row['mean_bp']), 1) if pd.notna(row.get('mean_bp')) else None,
-        }
-
-        # Send to Kafka
-        producer.send(topic, key=pid, value=message)
-
-        if idx % 50 == 0:
-            print(f"[Patient {pid}] Sent record {idx}/{len(df)}, "
-                  f"HR={message['heart_rate']}, SpO2={message['spo2']}")
-
-        time.sleep(shared_state["speed_seconds"])
-
-    print(f"[Patient {pid}] Stream complete ({len(df)} records sent)")
+            
+        loop_cnt += 1
+        print(f"[Patient {pid}] Reached end of data. Looping back to start (Loop {loop_cnt})...")
+        # Shift base_time forward by the length of the data so timestamps keep increasing
+        max_offset = df['offset_minutes'].iloc[-1] if 'offset_minutes' in df.columns else len(df) * 5
+        base_time += timedelta(minutes=float(max_offset) + 5.0)
 
 
 def main():
