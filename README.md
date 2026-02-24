@@ -21,6 +21,8 @@ The system establishes a continuous pipeline from a patient's in-home wearable d
 - **Deterministic Risk Bounding:** Computes instantaneous Z-score health thresholds natively via InfluxDB to absolutely eliminate raw AI hallucinations.
 - **MedGemma 1.5 Engine:** Uses a localized PyTorch `bfloat16` Hugging Face Python Server to infer hyper-accurate medical reasoning, ensuring 100% HIPAA data privacy (Zero External APIs).
   > **Why MedGemma 1.5 4B instead of 27B?** We deliberately selected the efficient 4B-parameter model because it unlocks true **Edge AI Integration**. The 4B-IT variant requires a fraction of the architectural VRAM, allowing HeartGuard AI to be natively embedded directly onto edge devices (smart home health hubs, local clinic towers, and ambulance computers) without ever requiring constant connection to a massive cloud GPU farm.
+- **Agentic ReAct Workflow:** MedGemma autonomously decides whether to query InfluxDB historical vital trends before finalizing its clinical assessment — a genuine Reasoning + Acting (ReAct) loop.
+- **RAG-Grounded SOAP Notes:** Clinician reports are enriched with AHA/ACC Heart Failure Guidelines retrieved from a local ChromaDB vector database, grounding AI reasoning in evidence-based medicine.
 - **Clinician Command Center:** Features a stunning "Premium Glassmorphism" UI built entirely from scratch utilizing Python Dash & Plotly.
 
 ---
@@ -86,15 +88,15 @@ MEDGEMMA_MODEL=google/medgemma-1.5-4b-it
 HeartGuard AI utilizes a completely localized Python HTTP server to host and infer the MedGemma model without ever pushing patient data into the cloud. 
 Launch it directly on your GPU:
 ```bash
-# Enter the processor directory
-cd processor
-
 # Install the strict HuggingFace dependencies
-pip install -r requirements.txt
+pip install -r processor/requirements.txt
+
+# Load environment variables (contains your HF_TOKEN)
+set -a && source .env && set +a
 
 # Start the server (Listens on Port 8888)
 # *Note: The very first launch will automatically pull ~8GB of Model Weights!*
-python3 medgemma_server.py
+python3 processor/medgemma_server.py
 ```
 
 **4. Launch the Docker Infrastructure**
@@ -129,6 +131,6 @@ From this gorgeous "Dark Glassmorphism" interface, you can effortlessly:
 ---
 
 <p align="center">
-  <i>Developed masterfully by <b>Emrullah Aydogan</b> for the <b>Kaggle MedGemma Impact Challenge</b>.</i><br>
-  Open sourced under the MIT / CC BY 4.0 License.
+  <i>Developed by <b>Emrullah Aydogan</b> for the <b>Kaggle MedGemma Impact Challenge</b>.</i><br>
+  Licensed under the MIT License.
 </p>
