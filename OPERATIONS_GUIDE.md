@@ -14,7 +14,7 @@
 │                                │                                         │
 │  ┌──────────┐   ┌───────┐   ┌─┴──────────┐   ┌──────────┐   ┌────────┐ │
 │  │ Producer  │──>│ Kafka │──>│ Processor  │──>│ InfluxDB │<──│Dash UI │ │
-│  │ (replay)  │   │:29092 │   │(host mode) │   │  :8087   │   │ :8050  │ │
+│  │ (replay)  │   │:29092 │   │(host mode) │   │  :8087   │   │ :9005  │ │
 │  └──────────┘   └───────┘   └────────────┘   └──────────┘   └────────┘ │
 │       │              │                                                   │
 │  CSV Replay     Zookeeper                                               │
@@ -77,7 +77,7 @@ All 6 containers should show as running:
 
 ### Step 3: Open Dashboards
 
-- **Dash UI:** http://localhost:8050
+- **Dash UI:** http://localhost:9005
   - Username: `admin`
   - Password: `heartguard`
 - **InfluxDB:** http://localhost:8087 (optional)
@@ -382,7 +382,7 @@ docker compose restart heartguard-processor
 
 | Service | Port | Protocol | Access |
 |---------|------|----------|--------|
-| Dash UI | 8050 | HTTP | http://localhost:8050 |
+| Dash UI | 9005 | HTTP | http://localhost:9005 |
 | InfluxDB | 8087 | HTTP | http://localhost:8087 |
 | Kafka (external) | 29092 | TCP | localhost:29092 |
 | Kafka (internal) | 9092 | TCP | kafka:9092 (Docker only) |

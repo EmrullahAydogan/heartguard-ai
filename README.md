@@ -85,7 +85,7 @@ docker compose up -d --build
 
 Once all containers show as healthy, your AI Command Center is strictly live:
 
-👉 **Open your web browser and navigate to: [http://localhost:8050](http://localhost:8050)**
+👉 **Open your web browser and navigate to: [http://localhost:9005](http://localhost:9005)**
 
 From this gorgeous "Dark Glassmorphism" interface, you can effortlessly:
 - Monitor live vital sign waveforms and dynamic health scores for active simulated patients.
