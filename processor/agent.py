@@ -68,16 +68,13 @@ class MedGemmaAgent:
                 if self.influx:
                     try:
                         from influxdb_client import InfluxDBClient
-                        influx_url = "http://localhost:8087"
-                        influx_token = "my-super-secret-auth-token"
-                        influx_org = "heartguard"
-                        influx_bucket = "patient_vitals"
+                        from config import INFLUXDB_URL, INFLUXDB_TOKEN, INFLUXDB_ORG, INFLUXDB_BUCKET
                         
-                        client = InfluxDBClient(url=influx_url, token=influx_token, org=influx_org)
+                        client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG)
                         query_api = client.query_api()
                         
                         flux_query = f'''
-                        from(bucket: "{influx_bucket}")
+                        from(bucket: "{INFLUXDB_BUCKET}")
                           |> range(start: -{hours}h)
                           |> filter(fn: (r) => r["_measurement"] == "{measurement}")
                           |> filter(fn: (r) => r["patient_id"] == "{patient_id}")
@@ -85,7 +82,7 @@ class MedGemmaAgent:
                           |> yield(name: "mean")
                         '''
                         
-                        tables = query_api.query(flux_query, org=influx_org)
+                        tables = query_api.query(flux_query, org=INFLUXDB_ORG)
                         values = []
                         for table in tables:
                             for record in table.records:
