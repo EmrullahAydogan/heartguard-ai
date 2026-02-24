@@ -77,16 +77,24 @@ A (Assessment): [clinical assessment]
 P (Plan): [recommended actions]"""
 
 
-NYHA_ESTIMATION_PROMPT = """Based on the following heart failure patient profile, estimate their NYHA functional class (I, II, III, or IV).
+NYHA_ESTIMATION_PROMPT = """You are a cardiology specialist. Estimate the NYHA functional class (I, II, III, or IV) for the following heart failure patient.
+
+NYHA CLASSIFICATION CRITERIA:
+- Class I: No limitation. Ordinary physical activity does not cause symptoms.
+- Class II: Slight limitation. Comfortable at rest, but ordinary activity causes fatigue or dyspnea.
+- Class III: Marked limitation. Comfortable at rest, but less than ordinary activity causes symptoms. Patients with elevated biomarkers (BNP >400, Troponin >1.0) or high severity scores (APACHE >50) are typically Class III or IV.
+- Class IV: Unable to carry on any physical activity without discomfort. Symptoms at rest.
 
 PATIENT PROFILE:
 - Age: {age}, Sex: {gender}
 - Primary Diagnosis: {primary_dx}
 - Comorbidities: {comorbidities}
-- Baseline Severity Index: {apache_score}
-- Resting HR: {hr_mean} bpm
-- Resting SpO2: {spo2_mean}%
-- Resting RR: {rr_mean} breaths/min
+- APACHE Severity Score: {apache_score} (normal: 0-10, moderate: 11-50, severe: 51-100, critical: >100)
+- Resting HR: {hr_mean} bpm (normal: 60-100)
+- Resting SpO2: {spo2_mean}% (normal: 95-100%, concerning: <93%)
+- Resting RR: {rr_mean} breaths/min (normal: 12-20)
 - Lab Values: {lab_values}
+
+IMPORTANT: Pay close attention to the APACHE score and lab biomarkers (Troponin, BNP). A very high APACHE score (>100) or elevated Troponin (>1.0) strongly suggests Class III or IV regardless of resting vitals.
 
 Respond with only: {{"nyha_class": <1-4>, "reasoning": "<brief explanation>"}}"""
