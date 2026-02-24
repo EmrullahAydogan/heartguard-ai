@@ -29,27 +29,40 @@ The system establishes a continuous pipeline from a patient's in-home wearable d
 Our 100% On-Premise telemetry pipeline forces the AI into a pure "translational" bounding box, strictly isolating MedGemma's generative logic from our deterministic mathematical baseline scoring:
 
 ```mermaid
-graph LR
-    %% Data Source
-    IoT[eICU Wearables<br>Vitals Stream] --> |JSON| KP(Kafka Producer)
+graph TD
+    subgraph Data_Acquisition [1. Data Acquisition Layer]
+        direction LR
+        IoT[eICU Wearables<br>Vitals Stream] --> |JSON| KP(Kafka Producer)
+    end
+
+    subgraph Message_Broker [2. High-Throughput Broker]
+        KP --> |Topic: patient_vitals| K{Apache Kafka<br>Message Broker}
+    end
+
+    subgraph AI_Core [3. Processing & Generative AI Core]
+        direction LR
+        K --> |Consume| SP[Stream Processor<br>Python Engine]
+        AI((MedGemma 1.5 4B<br>Local PyTorch API)) -.-> |SOAP Notes & Reasoning| SP
+    end
+
+    subgraph Storage [4. Time-Series Storage]
+        SP --> |Z-Scores & Text| DB[(InfluxDB<br>Time-Series Database)]
+    end
+
+    subgraph Interface [5. Clinician Interface]
+        DB --> |REST/Flux Queries| UI([Clinician Dash UI<br>Port 9005])
+    end
+
+    %% Styling
+    style Data_Acquisition fill:#0f172a,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Message_Broker fill:#1e1e1e,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style AI_Core fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#fff
+    style Storage fill:#1e1b4b,stroke:#8b5cf6,stroke-width:2px,color:#fff
+    style Interface fill:#4c0519,stroke:#e11d48,stroke-width:2px,color:#fff
     
-    %% Broker
-    KP --> |Topic: patient_vitals| K{Apache Kafka<br>Message Broker}
-
-    %% Process & AI
-    K --> |Consume| SP[Stream Processor<br>Python Engine]
-    AI((MedGemma 1.5 4B<br>Local PyTorch API)) -.-> |SOAP Notes & Reasoning| SP
-    
-    %% DB
-    SP --> |Z-Scores & Text| DB[(InfluxDB<br>Time-Series)]
-
-    %% Dashboard
-    DB --> |REST/Flux| UI([Clinician Dash UI<br>Port 9005])
-
-    %% Styling (Optional for dark-mode rendering)
-    style AI fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#fff
-    style UI fill:#701a75,stroke:#f472b6,stroke-width:2px,color:#fff
-    style DB fill:#0f172a,stroke:#38bdf8,stroke-width:1px,color:#fff
+    style AI fill:#047857,stroke:#34d399,stroke-width:3px,color:#fff
+    style UI fill:#9f1239,stroke:#f472b6,stroke-width:3px,color:#fff
+    style DB fill:#312e81,stroke:#a78bfa,stroke-width:3px,color:#fff
 ```
 
 ---
