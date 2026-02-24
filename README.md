@@ -30,39 +30,24 @@ Our 100% On-Premise telemetry pipeline forces the AI into a pure "translational"
 
 ```mermaid
 graph TD
-    subgraph Data_Acquisition [1. Data Acquisition Layer]
-        direction LR
-        IoT[eICU Wearables<br>Vitals Stream] --> |JSON| KP(Kafka Producer)
-    end
-
-    subgraph Message_Broker [2. High-Throughput Broker]
-        KP --> |Topic: patient_vitals| K{Apache Kafka<br>Message Broker}
-    end
-
-    subgraph AI_Core [3. Processing & Generative AI Core]
-        direction LR
-        K --> |Consume| SP[Stream Processor<br>Python Engine]
-        AI((MedGemma 1.5 4B<br>Local PyTorch API)) -.-> |SOAP Notes & Reasoning| SP
-    end
-
-    subgraph Storage [4. Time-Series Storage]
-        SP --> |Z-Scores & Text| DB[(InfluxDB<br>Time-Series Database)]
-    end
-
-    subgraph Interface [5. Clinician Interface]
-        DB --> |REST/Flux Queries| UI([Clinician Dash UI<br>Port 9005])
-    end
-
-    %% Styling
-    style Data_Acquisition fill:#0f172a,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style Message_Broker fill:#1e1e1e,stroke:#f59e0b,stroke-width:2px,color:#fff
-    style AI_Core fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#fff
-    style Storage fill:#1e1b4b,stroke:#8b5cf6,stroke-width:2px,color:#fff
-    style Interface fill:#4c0519,stroke:#e11d48,stroke-width:2px,color:#fff
+    %% Data Flow
+    A(eICU Patient Wearable<br>Live Stream) -->|JSON Telemetry| B{Apache Kafka<br>Message Broker}
     
-    style AI fill:#047857,stroke:#34d399,stroke-width:3px,color:#fff
-    style UI fill:#9f1239,stroke:#f472b6,stroke-width:3px,color:#fff
-    style DB fill:#312e81,stroke:#a78bfa,stroke-width:3px,color:#fff
+    B -->|Consume| C[Python Stream Processor<br>Z-Score Thresholds]
+    
+    E((MedGemma 1.5 4B API<br>Local PyTorch Server)) -.->|Generate SOAP Notes & NYHA| C
+
+    C -->|Store Metrics/Annotations| D[(InfluxDB<br>Time-Series)]
+    
+    D -->|Real-time Query| F([Clinician Command Center<br>Dash UI - Port 9005])
+
+    %% Clean Styling
+    style A fill:#f1f5f9,stroke:#64748b,stroke-width:2px,color:#0f172a
+    style B fill:#fdf4ff,stroke:#d946ef,stroke-width:2px,color:#4a044e
+    style C fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a
+    style D fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a
+    style E fill:#ecfdf5,stroke:#10b981,stroke-width:3px,color:#064e3b
+    style F fill:#fff1f2,stroke:#f43f5e,stroke-width:3px,color:#881337
 ```
 
 ---
