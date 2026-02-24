@@ -72,7 +72,7 @@ class InfluxWriter:
         except Exception as e:
             logger.error(f"Failed to write vitals: {e}")
 
-    def write_risk_scores(self, analysis: dict, calculator='spark'):
+    def write_risk_scores(self, analysis: dict, calculator='python'):
         """Write computed risk scores to InfluxDB."""
         timestamp = analysis.get('timestamp')
         if timestamp and isinstance(timestamp, str):

@@ -291,7 +291,7 @@ def main():
 
                     # Write vitals and risk scores to InfluxDB
                     influx.write_vitals(analysis)
-                    influx.write_risk_scores(analysis, calculator='spark')
+                    influx.write_risk_scores(analysis, calculator='python')
 
                     message_total += 1
 
