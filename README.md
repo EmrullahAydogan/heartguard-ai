@@ -112,7 +112,7 @@ From this gorgeous "Dark Glassmorphism" interface, you can effortlessly:
 - Interact with the **Optimistic-UI Chatbot** to effortlessly ask MedGemma highly detailed clinical questions referencing a patient's historical stream.
 
 > [!NOTE]  
-> **Inference Latency:** Because HeartGuard AI runs the massive *MedGemma 1.5 4B* model entirely locally for HIPAA-compliant privacy, **AI-generated outputs (SOAP Notes, NYHA alerts, and Chatbot replies) may take 10-20 seconds to fully appear** depending on your local GPU's compute power. The interface is completely non-blocking, allowing you to seamlessly monitor critical vitals while the AI quietly reasons in the background.
+> **Inference Latency:** Because HeartGuard AI runs the massive *MedGemma 1.5 4B* model entirely locally for HIPAA-compliant privacy, **AI-generated outputs (SOAP Notes, NYHA alerts, and Chatbot replies) may take some time to fully appear** depending on your local GPU's compute power. The interface is completely non-blocking, allowing you to seamlessly monitor critical vitals while the AI quietly reasons in the background.
 
 ---
 
