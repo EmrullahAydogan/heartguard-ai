@@ -1,0 +1,59 @@
+{
+  "patient_id": 3141080,
+  "age": "87",
+  "gender": "Male",
+  "ethnicity": "African American",
+  "hospital_id": 435,
+  "unit_type": "Med-Surg ICU",
+  "unit_stay_type": "admit",
+  "hospital_discharge_status": "Alive",
+  "primary_dx": "cardiovascular|ventricular disorders|congestive heart failure",
+  "icd9_code": "428.0, I50.9",
+  "comorbidities": [
+    "renal|disorder of kidney|acute renal failure|due to obstruction",
+    "endocrine|glucose metabolism|diabetes mellitus|Type II",
+    "renal|disorder of kidney|acute renal failure|suspected",
+    "oncology|GU tumors|prostate CA",
+    "cardiovascular|shock / hypotension|hypotension",
+    "endocrine|glucose metabolism|diabetes mellitus|Type II",
+    "endocrine|glucose metabolism|diabetes mellitus|Type II",
+    "renal|disorder of kidney|acute renal failure|due to obstruction",
+    "renal|disorder of kidney|acute renal failure|due to obstruction",
+    "cardiovascular|shock / hypotension|hypotension"
+  ],
+  "past_history": [
+    "notes/Progress Notes/Past History/Organ Systems/Cardiovascular (R)/Pulmonary Embolism/pulmonary embolism - within 6 months",
+    "notes/Progress Notes/Past History/Organ Systems/Cardiovascular (R)/Congestive Heart Failure/CHF - class III",
+    "notes/Progress Notes/Past History/Organ Systems/Cardiovascular (R)/Congestive Heart Failure/CHF - class III",
+    "notes/Progress Notes/Past History/Organ Systems/Hematology/Oncology (R)/Cancer/Metastases/lung",
+    "notes/Progress Notes/Past History/Organ Systems/Endocrine (R)/Non-Insulin Dependent Diabetes/medication dependent",
+    "notes/Progress Notes/Past History/Organ Systems/Hematology/Oncology (R)/Cancer/Metastases/brain",
+    "notes/Progress Notes/Past History/Organ Systems/Hematology/Oncology (R)/Cancer/Cancer-Primary Site/prostate",
+    "notes/Progress Notes/Past History/Organ Systems/Endocrine (R)/Non-Insulin Dependent Diabetes/medication dependent",
+    "notes/Progress Notes/Past History/Organ Systems/Cardiovascular (R)/Hypertension Requiring Treatment/hypertension requiring treatment",
+    "notes/Progress Notes/Past History/Organ Systems/Hematology/Oncology (R)/Cancer/Cancer-Primary Site/prostate"
+  ],
+  "medications": [],
+  "apache_score": 78.0,
+  "predicted_mortality": 0.08261666433960978,
+  "latest_labs": {
+    "BNP": 3529.6,
+    "creatinine": 0.69,
+    "potassium": 3.5,
+    "sodium": 137.0,
+    "troponin": 0.05
+  },
+  "baselines": {
+    "hr_mean": 89.79,
+    "hr_std": 1.66,
+    "spo2_mean": 96.66,
+    "spo2_std": 3.03,
+    "rr_mean": 18.53,
+    "rr_std": 2.26,
+    "sbp_mean": 99.56,
+    "sbp_std": 4.12,
+    "temp_mean": 37.29,
+    "temp_std": 0.18
+  },
+  "estimated_nyha_class": null
+}

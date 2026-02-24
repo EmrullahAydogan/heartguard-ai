@@ -1,0 +1,7 @@
+kafka-python-ng==2.2.3
+pandas==2.2.3
+influxdb-client==1.41.0
+numpy==2.2.3
+requests==2.32.3
+chromadb==0.5.21
+sentence-transformers==3.3.1

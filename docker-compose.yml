@@ -1,0 +1,119 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: heartguard-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    healthcheck:
+      test: ["CMD", "echo", "ruok", "|", "nc", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: heartguard-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
+  influxdb:
+    image: influxdb:2.7
+    container_name: heartguard-influxdb
+    ports:
+      - "8087:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_ADMIN_USER}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_ADMIN_PASSWORD}
+      DOCKER_INFLUXDB_INIT_ORG: ${INFLUXDB_ORG}
+      DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUXDB_BUCKET}
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_ADMIN_TOKEN}
+      DOCKER_INFLUXDB_INIT_RETENTION: 30d
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    healthcheck:
+      test: ["CMD", "influx", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  heartguard-producer:
+    build: ./producer
+    container_name: heartguard-producer
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER: kafka:9092
+      REPLAY_SPEED: ${REPLAY_SPEED}
+    volumes:
+      - ./data:/app/data
+      - ./producer:/app
+    restart: on-failure
+
+  heartguard-processor:
+    build: ./processor
+    container_name: heartguard-processor
+    network_mode: host
+    depends_on:
+      kafka:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER: localhost:29092
+      INFLUXDB_URL: http://localhost:8087
+      INFLUXDB_TOKEN: ${INFLUXDB_ADMIN_TOKEN}
+      INFLUXDB_ORG: ${INFLUXDB_ORG}
+      INFLUXDB_BUCKET: ${INFLUXDB_BUCKET}
+      HF_TOKEN: ${HF_TOKEN}
+      MEDGEMMA_LOCAL_URL: http://localhost:8888
+    volumes:
+      - ./data:/app/data
+      - ./processor:/app
+    restart: on-failure
+
+  heartguard-dashboard:
+    image: python:3.11-slim
+    container_name: heartguard-dashboard
+    network_mode: host
+    working_dir: /app
+    command: >
+      bash -c "pip install dash dash-bootstrap-components plotly influxdb-client requests kafka-python --quiet &&
+               python -u app.py"
+    volumes:
+      - ./dashboard:/app
+      - ./data:/app/data
+    environment:
+      INFLUXDB_URL: http://localhost:8087
+      INFLUXDB_TOKEN: ${INFLUXDB_ADMIN_TOKEN}
+      MEDGEMMA_URL: http://localhost:8888/chat
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    restart: on-failure
+
+volumes:
+  influxdb-data:

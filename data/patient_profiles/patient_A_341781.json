@@ -1,0 +1,126 @@
+{
+  "patient_id": 341781,
+  "age": "49",
+  "gender": "Male",
+  "ethnicity": "Caucasian",
+  "hospital_id": 122,
+  "unit_type": "CTICU",
+  "unit_stay_type": "readmit",
+  "hospital_discharge_status": "Alive",
+  "primary_dx": "cardiovascular|ventricular disorders|congestive heart failure",
+  "icd9_code": "428.0, I50.9",
+  "comorbidities": [
+    "cardiovascular|chest pain / ASHD|hyperlipidemia",
+    "cardiovascular|chest pain / ASHD|coronary artery disease|known"
+  ],
+  "past_history": [
+    "notes/Progress Notes/Past History/Organ Systems/Renal  (R)/Renal Insufficiency/renal insufficiency - creatinine 4-5",
+    "notes/Progress Notes/Past History/Past History Obtain Options/Performed",
+    "notes/Progress Notes/Past History/Organ Systems/Cardiovascular (R)/Pacemaker/A paced",
+    "notes/Progress Notes/Past History/Organ Systems/Renal  (R)/Renal Failure/renal failure- not currently dialyzed",
+    "notes/Progress Notes/Past History/Organ Systems/Cardiovascular (R)/Arrhythmias/ventricular tachycardia",
+    "notes/Progress Notes/Past History/Organ Systems/Cardiovascular (R)/Congestive Heart Failure/CHF",
+    "notes/Progress Notes/Past History/Organ Systems/Cardiovascular (R)/Procedural Coronary Intervention/procedural coronary intervention - within 6 months"
+  ],
+  "medications": [
+    {
+      "name": "MAGNESIUM SULFATE 2 GRAM/50 ML IV PIGGY BACK 50 ML FLEX CONT",
+      "dose": "2 g",
+      "route": "IV",
+      "frequency": ""
+    },
+    {
+      "name": "MAGNESIUM SULFATE 2 GRAM/50 ML IV PIGGY BACK 50 ML FLEX CONT",
+      "dose": "2 g",
+      "route": "IV",
+      "frequency": ""
+    },
+    {
+      "name": "SODIUM CHLORIDE 0.9 % SYRINGE 10 ML SYRINGE",
+      "dose": "10 mL",
+      "route": "IV",
+      "frequency": ""
+    },
+    {
+      "name": "SODIUM CHLORIDE 0.9 % SYRINGE 10 ML SYRINGE",
+      "dose": "10 mL",
+      "route": "IV",
+      "frequency": "0600,1400,2200"
+    },
+    {
+      "name": "SODIUM CHLORIDE 0.9 % SYRINGE 10 ML SYRINGE",
+      "dose": "10 mL",
+      "route": "IV",
+      "frequency": "0600,1400,2200"
+    },
+    {
+      "name": "SODIUM CHLORIDE 0.9 % SYRINGE 10 ML SYRINGE",
+      "dose": "10 mL",
+      "route": "IV",
+      "frequency": "0600,1400,2200"
+    },
+    {
+      "name": "SODIUM CHLORIDE 0.9 % IV 250 ML BAG",
+      "dose": "250 mL",
+      "route": "IV",
+      "frequency": ""
+    },
+    {
+      "name": "POTASSIUM CHLORIDE 40 MEQ/100 ML IV PIGGY BACK 100 ML BAG",
+      "dose": "40 mEq",
+      "route": "IV",
+      "frequency": ""
+    },
+    {
+      "name": "POTASSIUM CHLORIDE ER 20 MEQ TABLET,EXTENDED RELEASE(PART/CRYST)",
+      "dose": "20 mEq",
+      "route": "Oral",
+      "frequency": ""
+    },
+    {
+      "name": "POTASSIUM CHLORIDE 40 MEQ/100 ML IV PIGGY BACK 100 ML BAG",
+      "dose": "40 mEq",
+      "route": "IV",
+      "frequency": ""
+    },
+    {
+      "name": "POTASSIUM CHLORIDE ER 20 MEQ TABLET,EXTENDED RELEASE(PART/CRYST)",
+      "dose": "20 mEq",
+      "route": "Oral",
+      "frequency": ""
+    },
+    {
+      "name": "POTASSIUM CHLORIDE ER 20 MEQ TABLET,EXTENDED RELEASE(PART/CRYST)",
+      "dose": "20 mEq",
+      "route": "Oral",
+      "frequency": ""
+    },
+    {
+      "name": "AMIODARONE 200 MG TABLET",
+      "dose": "200 mg",
+      "route": "Oral",
+      "frequency": "0900,2100"
+    }
+  ],
+  "apache_score": 12.0,
+  "predicted_mortality": 0.02,
+  "latest_labs": {
+    "BNP": 85.0,
+    "creatinine": 1.1,
+    "potassium": 4.1,
+    "sodium": 139.0
+  },
+  "baselines": {
+    "hr_mean": 78.37,
+    "hr_std": 3.53,
+    "spo2_mean": 98.8,
+    "spo2_std": 2.26,
+    "rr_mean": 23.13,
+    "rr_std": 1.97,
+    "sbp_mean": null,
+    "sbp_std": null,
+    "temp_mean": 36.12,
+    "temp_std": 0.1
+  },
+  "estimated_nyha_class": null
+}

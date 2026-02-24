@@ -1,0 +1,392 @@
+/* HeartGuard AI - Premium Glassmorphism Theme */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-dark: #07090f;
+  --bg-gradient: radial-gradient(circle at top right, #1a1636 0%, #07090f 60%);
+  --bg-card: rgba(18, 22, 33, 0.65);
+  --bg-card-hover: rgba(26, 31, 46, 0.8);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.15);
+  --glass-blur: blur(12px);
+
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --orange: #f97316;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --purple: #8b5cf6;
+  --teal: #14b8a6;
+
+  /* Glow effects */
+  --glow-red: 0 0 15px rgba(239, 68, 68, 0.3);
+  --glow-orange: 0 0 15px rgba(249, 115, 22, 0.3);
+  --glow-purple: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+body {
+  background: var(--bg-gradient) !important;
+  background-attachment: fixed !important;
+  color: var(--text-primary) !important;
+  font-family: 'Outfit', -apple-system, sans-serif !important;
+  min-height: 100vh;
+}
+
+/* ── Nav ── */
+.navbar {
+  background: rgba(7, 9, 15, 0.7) !important;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--border) !important;
+  padding: 0.8rem 1.5rem !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #f8fafc, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-link {
+  color: var(--text-muted) !important;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--text-primary) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ── Cards (Glassmorphism) ── */
+.hg-card {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.hg-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-light);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
+}
+
+.hg-card-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Typography & Tags ── */
+.badge {
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  padding: 0.4em 0.7em;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid var(--border);
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* ── Status Colors ── */
+.status-stable {
+  color: var(--green) !important;
+}
+
+.status-watch {
+  color: var(--yellow) !important;
+}
+
+.status-warning {
+  color: var(--orange) !important;
+  text-shadow: var(--glow-orange);
+}
+
+.status-critical {
+  color: var(--red) !important;
+  text-shadow: var(--glow-red);
+}
+
+.bg-stable {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+.bg-watch {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+.bg-warning {
+  background: rgba(249, 115, 22, 0.15) !important;
+  border-color: rgba(249, 115, 22, 0.3) !important;
+}
+
+.bg-critical {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+/* ── Alert Cards ── */
+.alert-card {
+  border-radius: 10px;
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  border: 1px solid;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+.alert-card:hover {
+  transform: scale(1.02);
+}
+
+.alert-critical {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: var(--glow-red);
+}
+
+.alert-warning {
+  background: rgba(249, 115, 22, 0.1);
+  border-color: rgba(249, 115, 22, 0.3);
+  box-shadow: var(--glow-orange);
+}
+
+.alert-info {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* ── Patient Selector Pills ── */
+.patient-pill {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  border-radius: 24px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-right: 0.6rem;
+}
+
+.patient-pill:hover {
+  border-color: var(--purple);
+  color: var(--text-primary);
+  background: rgba(139, 92, 246, 0.1);
+  transform: translateY(-1px);
+}
+
+.patient-pill.selected {
+  border-color: var(--purple);
+  color: #fff;
+  background: rgba(139, 92, 246, 0.2);
+  box-shadow: var(--glow-purple);
+}
+
+/* ── Patient Command Center Cards ── */
+.cmd-patient-card {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.4rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.cmd-patient-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: var(--purple);
+  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.15);
+}
+
+.cmd-patient-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.cmd-vital-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.cmd-vital-item {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.cmd-vital-item span {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-left: 6px;
+}
+
+/* ── Stat Numbers ── */
+.stat-value {
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.03em;
+}
+
+.stat-unit {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/* ── Messages & SOAP Reports ── */
+.message-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.message-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+}
+
+.soap-report {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  max-height: 400px;
+  overflow-y: auto;
+  color: #cbd5e1;
+}
+
+.soap-report p {
+  margin-bottom: 1rem;
+}
+
+.soap-report ul,
+.soap-report ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.soap-report li {
+  margin-bottom: 0.4rem;
+}
+
+/* ── Graphs ── */
+.js-plotly-plot .plotly .main-svg {
+  background: transparent !important;
+}
+
+/* ── Loading / No Data ── */
+.no-data {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 2.5rem;
+  font-style: italic;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .stat-value {
+    font-size: 2rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+
+  .hg-card {
+    padding: 1.1rem;
+  }
+
+  .status-banner .banner-title {
+    font-size: 1.3rem;
+  }
+
+  .cmd-vital-grid {
+    grid-template-columns: 1fr;
+  }
+}

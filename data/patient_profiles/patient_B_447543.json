@@ -1,0 +1,93 @@
+{
+  "patient_id": 447543,
+  "age": "80",
+  "gender": "Male",
+  "ethnicity": "Hispanic",
+  "hospital_id": 143,
+  "unit_type": "Med-Surg ICU",
+  "unit_stay_type": "admit",
+  "hospital_discharge_status": "Expired",
+  "primary_dx": "cardiovascular|ventricular disorders|congestive heart failure",
+  "icd9_code": "428.0, I50.9",
+  "comorbidities": [
+    "renal|electrolyte imbalance|hypochloremia",
+    "cardiovascular|ventricular disorders|acute pulmonary edema",
+    "infectious diseases|GI infections|enteritis|colitis, presumed infectious",
+    "renal|disorder of kidney|acute renal failure",
+    "hematology|coagulation disorders|hypercoagulable state",
+    "pulmonary|respiratory failure|acute respiratory failure",
+    "pulmonary|respiratory failure|acute respiratory distress",
+    "renal|electrolyte imbalance|hyponatremia",
+    "cardiovascular|shock / hypotension|sepsis|sepsis with multi-organ dysfunction",
+    "hematology|coagulation disorders|hypercoagulable state"
+  ],
+  "past_history": [
+    "notes/Progress Notes/Past History/Organ Systems/Cardiovascular (R)/Hypertension Requiring Treatment/hypertension requiring treatment",
+    "notes/Progress Notes/Past History/Past History Obtain Options/Performed"
+  ],
+  "medications": [
+    {
+      "name": "TYLENOL",
+      "dose": "650 MG",
+      "route": "REC",
+      "frequency": "ONCE"
+    },
+    {
+      "name": "ASPIRIN",
+      "dose": "300 MG",
+      "route": "REC",
+      "frequency": "ONCE"
+    },
+    {
+      "name": "heparin (porcine)",
+      "dose": "5,000 UNITS",
+      "route": "SUBQ",
+      "frequency": "Q12H"
+    },
+    {
+      "name": "Protonix",
+      "dose": "40 MG",
+      "route": "IV",
+      "frequency": "QAM"
+    },
+    {
+      "name": "LOVENOX",
+      "dose": "30 MG",
+      "route": "SUBQ",
+      "frequency": "DAILY"
+    },
+    {
+      "name": "LOVENOX",
+      "dose": "40 MG",
+      "route": "SUBQ",
+      "frequency": "DAILY"
+    },
+    {
+      "name": "LOPRESSOR",
+      "dose": "5 MG",
+      "route": "IV",
+      "frequency": ""
+    }
+  ],
+  "apache_score": 112.0,
+  "predicted_mortality": 0.5296197296377687,
+  "latest_labs": {
+    "creatinine": 3.8,
+    "potassium": 3.9,
+    "sodium": 144.0,
+    "troponin": 4.95
+  },
+  "baselines": {
+    "hr_mean": 80.93,
+    "hr_std": 12.69,
+    "spo2_mean": 86.05,
+    "spo2_std": 10.37,
+    "rr_mean": 31.33,
+    "rr_std": 2.12,
+    "sbp_mean": null,
+    "sbp_std": null,
+    "temp_mean": 38.35,
+    "temp_std": 0.37
+  },
+  "estimated_nyha_class": null
+}

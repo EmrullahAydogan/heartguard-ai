@@ -1,0 +1,12 @@
+{
+  "patients": {
+    "A": 341781,
+    "B": 447543,
+    "C": 3141080
+  },
+  "labels": {
+    "A": "Stable Control",
+    "B": "Deteriorating (Main Demo)",
+    "C": "Personalization Demo"
+  }
+}

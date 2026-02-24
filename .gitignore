@@ -1,0 +1,32 @@
+# Environments & Secrets
+.env
+.venv
+env/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Logs
+logs/
+*.log
+processor/server.log
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+
+# Generated Data & Volumes
+data/chroma_db/
+data/processed/
+data/raw/
+influxdb-data/
+kafka-data/
+zookeeper-data/
+models--google--*
+hf_cache/
