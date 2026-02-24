@@ -26,10 +26,31 @@ The system establishes a continuous pipeline from a patient's in-home wearable d
 
 ## 🏗️ System Architecture
 
-Our 100% On-Premise telemetry pipeline forces the AI into a pure "translational" bounding box:
+Our 100% On-Premise telemetry pipeline forces the AI into a pure "translational" bounding box, strictly isolating MedGemma's generative logic from our deterministic mathematical baseline scoring:
 
-`eICU Patient IoT` ➔ `Kafka Producer` ➔ `Apache Kafka` ➔ `Stream Processor` ➔ `InfluxDB` ➔ `Clinician Dash UI`
-                                                                    ↳ `MedGemma 1.5 Local API (:8888)`
+```mermaid
+graph LR
+    %% Data Source
+    IoT[eICU Wearables<br>Vitals Stream] --> |JSON| KP(Kafka Producer)
+    
+    %% Broker
+    KP --> |Topic: patient_vitals| K{Apache Kafka<br>Message Broker}
+
+    %% Process & AI
+    K --> |Consume| SP[Stream Processor<br>Python Engine]
+    AI((MedGemma 1.5 4B<br>Local PyTorch API)) -.-> |SOAP Notes & Reasoning| SP
+    
+    %% DB
+    SP --> |Z-Scores & Text| DB[(InfluxDB<br>Time-Series)]
+
+    %% Dashboard
+    DB --> |REST/Flux| UI([Clinician Dash UI<br>Port 9005])
+
+    %% Styling (Optional for dark-mode rendering)
+    style AI fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#fff
+    style UI fill:#701a75,stroke:#f472b6,stroke-width:2px,color:#fff
+    style DB fill:#0f172a,stroke:#38bdf8,stroke-width:1px,color:#fff
+```
 
 ---
 
