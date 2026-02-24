@@ -88,7 +88,13 @@ MEDGEMMA_MODEL=google/medgemma-1.5-4b-it
 HeartGuard AI utilizes a completely localized Python HTTP server to host and infer the MedGemma model without ever pushing patient data into the cloud. 
 Launch it directly on your GPU:
 ```bash
-# Install the strict HuggingFace dependencies
+# Install PyTorch with CUDA support (GPU-accelerated inference)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+
+# Install Hugging Face model loading dependencies
+pip install transformers accelerate
+
+# Install remaining project dependencies
 pip install -r processor/requirements.txt
 
 # Load environment variables (contains your HF_TOKEN)
