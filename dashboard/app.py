@@ -133,38 +133,7 @@ navbar = dbc.Navbar(
 
 settings_offcanvas = dbc.Offcanvas(
     html.Div([
-        # Data Stream Speed Control
-        html.Div([
-            html.Div([
-                html.I(className="bi bi-speedometer2 me-2", style={"color": "var(--purple)"}),
-                "Data Stream Speed Control",
-            ], className="hg-card-title"),
-            html.P("Change how fast patient data flows into the system.", style={"fontSize": "0.85rem", "color": "var(--text-muted)"}),
-            html.Div([
-                dbc.Button("Real-Time (5 min)", id="btn-speed-realtime", color="secondary", outline=True, className="mb-2 w-100", size="sm"),
-                dbc.Button("Demo Mode (1 sec)", id="btn-speed-demo", color="primary", outline=True, className="mb-2 w-100", size="sm"),
-                dbc.Button("Fast Forward (0.2 sec)", id="btn-speed-fast", color="warning", outline=True, className="mb-2 w-100", size="sm"),
-            ]),
-            html.Div(id="speed-status", className="mt-2 mb-4", style={"color": "var(--green)", "fontSize": "0.85rem", "fontWeight": 600, "textAlign": "center"}),
-        ]),
-        
-        html.Hr(style={"opacity": "0.1"}),
 
-        # Stream State Controls
-        html.Div([
-            html.Div([
-                html.I(className="bi bi-play-circle-fill me-2", style={"color": "var(--green)"}),
-                "Stream Status Controls",
-            ], className="hg-card-title"),
-            html.P("Pause or resume the active data flow.", style={"fontSize": "0.85rem", "color": "var(--text-muted)"}),
-            dbc.ButtonGroup([
-                dbc.Button([html.I(className="bi bi-play-fill me-1"), "Play Stream"], id="btn-play", color="success", outline=True, size="sm"),
-                dbc.Button([html.I(className="bi bi-pause-fill me-1"), "Pause Stream"], id="btn-pause", color="danger", outline=True, size="sm"),
-            ], className="w-100 mb-2"),
-            html.Div(id="state-status", className="mt-2 mb-4", style={"color": "var(--text-muted)", "fontSize": "0.85rem", "fontWeight": 600, "textAlign": "center"}),
-        ]),
-        
-        html.Hr(style={"opacity": "0.1"}),
 
         # Database Controls
         html.Div([
@@ -930,51 +899,7 @@ def command_layout():
     ], fluid=True, style={"paddingTop": "1rem"})
 
 
-@app.callback(
-    Output("speed-status", "children"),
-    Input("btn-speed-realtime", "n_clicks"),
-    Input("btn-speed-demo", "n_clicks"),
-    Input("btn-speed-fast", "n_clicks"),
-    prevent_initial_call=True
-)
-def update_speed(n1, n2, n3):
-    ctx_id = ctx.triggered_id
-    if not ctx_id or not dash_producer:
-        return "Not connected to Kafka producer."
-    
-    speed_map = {
-        "btn-speed-realtime": ("300.0", "Real-Time (1 update / 5 mins)"),
-        "btn-speed-demo":     ("1.0",   "Demo Mode (1 update / second)"),
-        "btn-speed-fast":     ("0.2",   "Fast Forward (5 updates / second)"),
-    }
-    
-    val, label = speed_map[ctx_id]
-    try:
-        dash_producer.send("chf.control", value={"action": "set_speed", "value": val})
-        dash_producer.flush()
-        return f"Active Mode: {label}"
-    except Exception as e:
-        return f"Error: {e}"
 
-
-@app.callback(
-    Output("state-status", "children"),
-    Input("btn-play", "n_clicks"),
-    Input("btn-pause", "n_clicks"),
-    prevent_initial_call=True
-)
-def update_state(n_play, n_pause):
-    ctx_id = ctx.triggered_id
-    if not ctx_id or not dash_producer:
-        return "Not connected to Kafka producer."
-
-    state = "playing" if ctx_id == "btn-play" else "paused"
-    try:
-        dash_producer.send("chf.control", value={"action": "set_state", "value": state})
-        dash_producer.flush()
-        return f"Stream Status: {state.capitalize()}"
-    except Exception as e:
-        return f"Error: {e}"
 
 
 @app.callback(
