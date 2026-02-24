@@ -33,24 +33,18 @@ USE_LOCAL_MODEL = os.environ.get('USE_LOCAL_MODEL', 'false').lower() == 'true'
 
 
 def _call_medgemma(prompt: str) -> str:
-    """Call MedGemma model. Priority: local server > local model > HF API > fallback."""
+    """Call MedGemma model. Priority: local server > fallback (no cloud API)."""
     # 1. Try local MedGemma server first (fastest, GPU-accelerated)
     if MEDGEMMA_LOCAL_URL:
         result = _call_local_server(prompt)
         if result:
             return result
 
-    # 2. Try loading model directly
+    # 2. Try loading model directly (if configured)
     if USE_LOCAL_MODEL:
         return _call_local_model(prompt)
 
-    # 3. Try HuggingFace API
-    if HF_TOKEN:
-        result = _call_hf_api(prompt)
-        if result:
-            return result
-
-    # 4. Fallback to rule-based
+    # 3. Fallback to rule-based (skip cloud API — adds 60s timeout per call)
     return _fallback_response(prompt)
 
 
