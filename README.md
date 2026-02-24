@@ -7,7 +7,7 @@ Real-time early warning system for CHF patients using personalized thresholds, s
 ## Architecture
 
 ```
-eICU CSV Data → Kafka Producer → Apache Kafka → Stream Processor → InfluxDB → Grafana
+eICU CSV Data → Kafka Producer → Apache Kafka → Stream Processor → InfluxDB → Dash UI
                                                       ↓
                                                 MedGemma Engine
                                               (Clinical Reasoning)
@@ -20,7 +20,6 @@ eICU CSV Data → Kafka Producer → Apache Kafka → Stream Processor → Influ
 docker compose up -d
 
 # 2. Access dashboards
-# Grafana: http://localhost:3000 (admin/heartguard)
 # InfluxDB: http://localhost:8087 (admin/heartguard2026)
 ```
 
@@ -30,11 +29,11 @@ docker compose up -d
 |---------|------|-------------|
 | Kafka | 9092/29092 | Message broker |
 | InfluxDB | 8087 | Time series database |
-| Grafana | 3000 | Dashboard visualization |
+| Dash UI | 8050 | Dashboard visualization |
 | Producer | - | CSV replay to Kafka |
 | Processor | - | Vital analysis + MedGemma |
 
-## Grafana Dashboards
+## Dash UI Dashboards
 
 1. **Clinician Single Patient View** - Detailed vital signs, risk scores, MedGemma assessments
 2. **Multi-Patient Monitor** - Overview of all patients, risk comparison

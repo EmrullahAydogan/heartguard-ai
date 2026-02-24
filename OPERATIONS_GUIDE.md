@@ -13,8 +13,8 @@
 ┌────────────────────────────────┼──── DOCKER ─────────────────────────────┐
 │                                │                                         │
 │  ┌──────────┐   ┌───────┐   ┌─┴──────────┐   ┌──────────┐   ┌────────┐ │
-│  │ Producer  │──>│ Kafka │──>│ Processor  │──>│ InfluxDB │<──│Grafana │ │
-│  │ (replay)  │   │:29092 │   │(host mode) │   │  :8087   │   │ :3000  │ │
+│  │ Producer  │──>│ Kafka │──>│ Processor  │──>│ InfluxDB │<──│Dash UI │ │
+│  │ (replay)  │   │:29092 │   │(host mode) │   │  :8087   │   │ :8050  │ │
 │  └──────────┘   └───────┘   └────────────┘   └──────────┘   └────────┘ │
 │       │              │                                                   │
 │  CSV Replay     Zookeeper                                               │
@@ -28,7 +28,7 @@
 3. When anomaly/trigger detected, request is queued for **MedGemma** (Layer 2)
 4. MedGemma worker processes queue sequentially (one at a time, waits for completion)
 5. All results written to **InfluxDB** (vital signs, risk scores, AI assessments, alerts)
-6. **Grafana** dashboards visualize everything in real-time
+6. **Dash UI** dashboards visualize everything in real-time
 
 ---
 
@@ -71,13 +71,13 @@ All 6 containers should show as running:
 | heartguard-zookeeper | Running (healthy) |
 | heartguard-kafka | Running (healthy) |
 | heartguard-influxdb | Running (healthy) |
-| heartguard-grafana | Running |
+| heartguard-dashboard | Running |
 | heartguard-producer | Running |
 | heartguard-processor | Running |
 
 ### Step 3: Open Dashboards
 
-- **Grafana:** http://localhost:3000
+- **Dash UI:** http://localhost:8050
   - Username: `admin`
   - Password: `heartguard`
 - **InfluxDB:** http://localhost:8087 (optional)
@@ -106,7 +106,7 @@ kill $(lsof -ti:8888)
 # Stop producer and processor only
 docker compose stop heartguard-producer heartguard-processor
 
-# Infrastructure (Kafka, InfluxDB, Grafana) stays running
+# Infrastructure (Kafka, InfluxDB, Dash UI) stays running
 # Dashboard data remains visible
 ```
 
@@ -119,7 +119,7 @@ docker compose down -v
 # Stop MedGemma
 kill $(lsof -ti:8888)
 
-# This deletes all InfluxDB data and Grafana settings
+# This deletes all InfluxDB data and Dash UI settings
 ```
 
 ---
@@ -273,7 +273,7 @@ After changes: `docker compose up -d --build heartguard-processor`
 
 ---
 
-## Grafana Dashboards
+## Dash UI Dashboards
 
 ### 3 Dashboard Types
 
@@ -293,13 +293,13 @@ After changes: `docker compose up -d --build heartguard-processor`
 
 - Default: Last 6 hours to +2 days ahead
 - Data timestamps extend into the future (due to CSV offset replay)
-- Use Grafana's time picker to zoom in/out
+- Use Dash UI's time picker to zoom in/out
 
 ### Dashboard Refresh
 
 - Dashboards auto-refresh every 5 seconds
-- Dashboard JSON files are reloaded by Grafana every 10 seconds
-- After editing JSON files: `docker compose restart grafana`
+- Dashboard JSON files are reloaded by Dash UI every 10 seconds
+- After editing JSON files: `docker compose restart dashboard`
 
 ---
 
@@ -346,7 +346,6 @@ docker compose logs --tail=20 heartguard-processor
 # MedGemma port 8888
 kill $(lsof -ti:8888)
 
-# Grafana port 3000
 docker compose down
 docker compose up -d
 
@@ -383,7 +382,7 @@ docker compose restart heartguard-processor
 
 | Service | Port | Protocol | Access |
 |---------|------|----------|--------|
-| Grafana | 3000 | HTTP | http://localhost:3000 |
+| Dash UI | 8050 | HTTP | http://localhost:8050 |
 | InfluxDB | 8087 | HTTP | http://localhost:8087 |
 | Kafka (external) | 29092 | TCP | localhost:29092 |
 | Kafka (internal) | 9092 | TCP | kafka:9092 (Docker only) |
@@ -394,7 +393,6 @@ docker compose restart heartguard-processor
 
 | Service | Username | Password |
 |---------|----------|----------|
-| Grafana | admin | heartguard |
 | InfluxDB | admin | heartguard2026 |
 | InfluxDB Token | - | heartguard-super-secret-token |
 
