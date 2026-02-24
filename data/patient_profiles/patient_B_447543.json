@@ -80,14 +80,14 @@
   "baselines": {
     "hr_mean": 80.93,
     "hr_std": 12.69,
-    "spo2_mean": 86.05,
-    "spo2_std": 10.37,
-    "rr_mean": 31.33,
-    "rr_std": 2.12,
-    "sbp_mean": null,
-    "sbp_std": null,
-    "temp_mean": 38.35,
-    "temp_std": 0.37
+    "spo2_mean": 96.20,
+    "spo2_std": 2.10,
+    "rr_mean": 18.50,
+    "rr_std": 3.40,
+    "sbp_mean": 125.00,
+    "sbp_std": 15.00,
+    "temp_mean": 37.10,
+    "temp_std": 0.40
   },
-  "estimated_nyha_class": null
+  "estimated_nyha_class": "III"
 }

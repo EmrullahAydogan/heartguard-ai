@@ -23,7 +23,7 @@ processor/server.log
 
 # Generated Data & Volumes
 data/chroma_db/
-data/processed/
+# data/processed/ is deliberately tracked — ships 3 patient CSVs for instant judge reproducibility
 data/raw/
 influxdb-data/
 kafka-data/

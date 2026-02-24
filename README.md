@@ -72,9 +72,13 @@ cd heartguard-ai
 ```
 
 **2. Configure Environment Secrets**
-Open the `.env` file in the root directory and securely paste your Hugging Face Token:
+Copy the provided template and fill in your Hugging Face Token:
+```bash
+cp .env.example .env
+```
+Then open `.env` and replace the placeholder with your real token:
 ```env
-HF_TOKEN=hf_your_hugging_face_token_here
+HF_TOKEN=hf_your_real_hugging_face_token_here
 MEDGEMMA_MODEL=google/medgemma-1.5-4b-it
 ```
 

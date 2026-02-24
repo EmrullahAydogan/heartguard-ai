@@ -62,10 +62,52 @@ class MedGemmaAgent:
             if action == "query_history":
                 measurement = kwargs.get("measurement")
                 hours = kwargs.get("hours_back", 4)
-                # In a real impl, we'd query self.influx here.
-                # For this challenge demo, we'll return simulated historical context
-                # based on the patient state to prove the agentic loop works.
-                return f"Observation from InfluxDB: In the last {hours} hours, {measurement} was relatively stable until a sudden change 30 minutes ago."
+                patient_id = kwargs.get("patient_id", getattr(state, 'patient_id', 'unknown'))
+                
+                # Query real data from InfluxDB
+                if self.influx:
+                    try:
+                        from influxdb_client import InfluxDBClient
+                        influx_url = "http://localhost:8087"
+                        influx_token = "my-super-secret-auth-token"
+                        influx_org = "heartguard"
+                        influx_bucket = "patient_vitals"
+                        
+                        client = InfluxDBClient(url=influx_url, token=influx_token, org=influx_org)
+                        query_api = client.query_api()
+                        
+                        flux_query = f'''
+                        from(bucket: "{influx_bucket}")
+                          |> range(start: -{hours}h)
+                          |> filter(fn: (r) => r["_measurement"] == "{measurement}")
+                          |> filter(fn: (r) => r["patient_id"] == "{patient_id}")
+                          |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)
+                          |> yield(name: "mean")
+                        '''
+                        
+                        tables = query_api.query(flux_query, org=influx_org)
+                        values = []
+                        for table in tables:
+                            for record in table.records:
+                                values.append(round(record.get_value(), 2))
+                        
+                        client.close()
+                        
+                        if values:
+                            avg_val = round(sum(values) / len(values), 2)
+                            min_val = min(values)
+                            max_val = max(values)
+                            trend = "rising" if values[-1] > values[0] else "falling" if values[-1] < values[0] else "stable"
+                            return (f"Observation from InfluxDB: In the last {hours}h, {measurement} for patient {patient_id}: "
+                                    f"avg={avg_val}, min={min_val}, max={max_val}, trend={trend}, "
+                                    f"data_points={len(values)}, latest_values={values[-5:]}")
+                        else:
+                            return f"Observation from InfluxDB: No {measurement} data found for patient {patient_id} in the last {hours}h."
+                    except Exception as e:
+                        logger.warning(f"InfluxDB query failed, using context: {e}")
+                        return f"Observation: InfluxDB query for {measurement} encountered an error. Unable to retrieve historical trend."
+                else:
+                    return f"Observation: InfluxDB client not available. Cannot retrieve historical {measurement} data for trend analysis."
                 
             elif action == "fetch_latest_labs":
                 labs = state.profile.get("latest_labs", {})

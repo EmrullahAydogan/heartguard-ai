@@ -114,8 +114,14 @@ def _call_local_model(prompt: str) -> str:
 
 def _fallback_response(prompt: str) -> str:
     """Generate a rule-based fallback when MedGemma is unavailable."""
-    # This ensures the system works even without MedGemma API access
-    return ""
+    # Return a meaningful rule-based response instead of empty string
+    logger.warning("MedGemma unavailable — generating rule-based fallback response.")
+    return json.dumps({
+        "risk_level": "MODERATE",
+        "reasoning": "MedGemma AI engine is currently unavailable. This is an automated rule-based assessment. Please consult the deterministic vital sign scoring for accurate risk evaluation.",
+        "recommendation": "Continue monitoring. Review Z-score thresholds and vital trends on the dashboard for clinical decision support.",
+        "confidence": "LOW — AI engine offline, using rule-based fallback"
+    })
 
 
 def _parse_json_response(text: str) -> dict:
